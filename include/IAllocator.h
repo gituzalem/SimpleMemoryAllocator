@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace SimpleMemoryManager {
+namespace SimpleMemoryAllocator {
 
 	/**
 	* The base custom allocator class containing all the common interface methods and members. All allocators inherit from this class.

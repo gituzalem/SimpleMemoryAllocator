@@ -3,7 +3,7 @@
 
 #include "IAllocator.h"
 
-namespace SimpleMemoryManager {
+namespace SimpleMemoryAllocator {
 
 	/**
 	* A custom allocator working as a "pool" of equally sized objects. Since the size of the

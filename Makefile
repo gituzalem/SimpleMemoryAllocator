@@ -1,8 +1,8 @@
-##################################################
-# Windows MinGW Makefile for SimpleMemoryManger  #
-# Author: Matus Sabol                            #
-# Date: 27. 6. 2018                              #
-##################################################
+#############################################
+#  *nix Makefile for SimpleMemoryAllocator  #
+#  Author: Matus Sabol                      #
+#  Date: 27. 6. 2018                        #
+#############################################
 
 # TODO: dynamic library building?
 # TODO: separating object files from actual build product?
@@ -26,15 +26,15 @@ prebuild:
 	mkdir -p $(BUILD_DIR)
 
 # build static library
-static: libSimpleMemoryManager.a 
+static: libSimpleMemoryAllocator.a 
 
 # build objects
 $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
-libSimpleMemoryManager.a: $(OBJECTS)
+libSimpleMemoryAllocator.a: $(OBJECTS)
 	$(CXX) -c $(CXXFLAGS) $(SOURCES)
 	$(AR) $(BUILD_DIR)/$@ $(OBJECTS)
 
 clean:
-	rm -rf $(BUILD_DIRECTORY) $(OBJECTS) $(BUILD_DIR)/libSimpleMemoryManager.*
+	rm -rf $(BUILD_DIRECTORY) $(OBJECTS) $(BUILD_DIR)/libSimpleMemoryAllocator.*

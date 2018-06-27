@@ -3,7 +3,7 @@
 
 #include "IAllocator.h"
 
-namespace SimpleMemoryManager {
+namespace SimpleMemoryAllocator {
 
 	/**
 	* A custom allocator that allocates memory in a linear fashion. Being the simplest, and therefore

@@ -1,7 +1,7 @@
 #include "../include/PoolAllocator.h"
 #include "../include/Util.h"
 
-using namespace SimpleMemoryManager;
+using namespace SimpleMemoryAllocator;
 
 PoolAllocator::PoolAllocator(void* start, size_t size, size_t objectSize, uint8_t objectAlignment) : IAllocator(start, size) {
 	uint8_t adjustment = MemoryUtils::getNextAddressAdjustment(start, objectAlignment);

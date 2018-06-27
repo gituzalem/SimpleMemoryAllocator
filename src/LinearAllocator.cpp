@@ -1,7 +1,7 @@
 #include "../include/LinearAllocator.h"
 #include "../include/Util.h"
 
-using namespace SimpleMemoryManager;
+using namespace SimpleMemoryAllocator;
 
 LinearAllocator::LinearAllocator(void* start, size_t size) : IAllocator(start, size), m_firstFree(m_start) { }
 

@@ -1,6 +1,6 @@
 #include "../include/Util.h"
 
-using namespace SimpleMemoryManager;
+using namespace SimpleMemoryAllocator;
 
 uintptr_t MemoryUtils::getNextAlignedAddress(void* address, uint8_t alignment) {
 	return (((uintptr_t)(address) + alignment) & ~(alignment - 1));

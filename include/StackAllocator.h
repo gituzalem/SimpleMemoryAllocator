@@ -3,7 +3,7 @@
 
 #include "IAllocator.h"
 
-namespace SimpleMemoryManager {
+namespace SimpleMemoryAllocator {
 
 	/**
 	* A custom allocator working in a stack fashion. Therefore, all allocated memory must be deallocated
