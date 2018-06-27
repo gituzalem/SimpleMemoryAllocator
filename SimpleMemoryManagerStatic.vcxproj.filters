@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Base">
+      <UniqueIdentifier>{cbeb57de-3a5c-4b3f-a425-749984c51341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LinearAllocator">
+      <UniqueIdentifier>{cc5cb93d-7f59-4118-aafb-ef98983b32e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PoolAllocator">
+      <UniqueIdentifier>{e7014564-3deb-4b14-8b2f-b88795ada596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StackAllocator">
+      <UniqueIdentifier>{ed09b65e-61ec-4c8a-8299-27e4dd3ee9ab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\IAllocator.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Util.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LinearAllocator.h">
+      <Filter>LinearAllocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StackAllocator.h">
+      <Filter>StackAllocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PoolAllocator.h">
+      <Filter>PoolAllocator</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\LinearAllocator.cpp">
+      <Filter>LinearAllocator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StackAllocator.cpp">
+      <Filter>StackAllocator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Util.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PoolAllocator.cpp">
+      <Filter>PoolAllocator</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
