@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include "Util.h"
 
 namespace SimpleMemoryAllocator {
 
@@ -74,6 +75,8 @@ namespace SimpleMemoryAllocator {
 	* @todo documentation
 	*/
 	template <class T> T* allocateArray(IAllocator& allocator, size_t length) {
+		throw_assert(length > 0, "allocated array length must be larger than 0");
+
 		// calculate how many T-sized chucks we need to allocate to store the array length
 		uint8_t headerSize = sizeof(size_t) / sizeof(T);
 		if (sizeof(size_t) % sizeof(T) > 0) 
@@ -94,6 +97,8 @@ namespace SimpleMemoryAllocator {
 	* @todo documentation
 	*/
 	template <class T> void deallocateArray(IAllocator& allocator, T* array) {
+		throw_assert(array != nullptr, "deallocated array pointer must not be null");
+
 		// calculate header size
 		uint8_t headerSize = sizeof(size_t) / sizeof(T);
 		if (sizeof(size_t) % sizeof(T) > 0)

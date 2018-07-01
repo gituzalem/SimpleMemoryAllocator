@@ -11,6 +11,8 @@ StackAllocator::~StackAllocator() {
 }
 
 void* StackAllocator::allocate(size_t size, uint8_t alignment) {
+	throw_assert(size > 0, "allocated size must be larger than 0");
+
 	uint8_t adjustment = MemoryUtils::getNextAddressAdjustmentWithHeader(m_top, alignment, sizeof(StackAllocationHeader));
 
 	// don't allocate if we need to allocate more than we have free
@@ -31,6 +33,8 @@ void* StackAllocator::allocate(size_t size, uint8_t alignment) {
 }
 
 void StackAllocator::deallocate(void* ptr) {
+	throw_assert(ptr != nullptr, "deallocated pointer must not be null");
+
 	StackAllocationHeader* header = (StackAllocationHeader*)((uintptr_t)ptr - sizeof(StackAllocationHeader));
 	m_usedMemory -= ((uintptr_t)m_top - (uintptr_t)ptr + header->adjustment);
 	m_top = (void*)((uintptr_t)ptr - header->adjustment);

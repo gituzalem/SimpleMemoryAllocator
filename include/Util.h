@@ -40,9 +40,7 @@ namespace SimpleMemoryAllocator {
 				ostream << message << ": ";
 			}
 
-			ostream << "assertion '" << expression << "'";
-
-			ostream << " failed in file '" << m_file << "' line " << m_line;
+			ostream << "Assertion '" << expression << "' failed in file '" << m_file << "' line " << m_line;
 
 			m_report = ostream.str();
 		}
@@ -73,5 +71,6 @@ namespace SimpleMemoryAllocator {
 	#define throw_assert(EXPRESSION, MESSAGE) if(!(EXPRESSION)) { throw AssertException(#EXPRESSION, __FILE__, __LINE__, MESSAGE); }
 
 } // namespace SimpleMemoryAllocator
+
 
 #endif
