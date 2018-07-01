@@ -33,7 +33,6 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 libSimpleMemoryAllocator.a: $(OBJECTS)
-	$(CXX) -c $(CXXFLAGS) $(SOURCES)
 	$(AR) $(BUILD_DIR)/$@ $(OBJECTS)
 
 clean:
