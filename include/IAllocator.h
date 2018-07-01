@@ -51,23 +51,63 @@ namespace SimpleMemoryAllocator {
 	/**
 	* @todo documentation
 	*/
-	template <class T> T* allocateNew(IAllocator& allocator) {
+	template <class T> T* allocate(IAllocator& allocator) {
 		return new (allocator.allocate(sizeof(T), alignof(T))) T;
 	}
 
 	/**
 	* @todo documentation
 	*/
-	template <class T> T* allocateNew(IAllocator& allocator, const T& t) {
+	template <class T> T* allocate(IAllocator& allocator, const T& t) {
 		return new (allocator.allocate(sizeof(T), alignof(T))) T(t);
 	}
 
 	/**
 	* @todo documentation
 	*/
-	template <class T> void deallocateDelete(IAllocator& allocator, T& object) {
+	template <class T> void deallocate(IAllocator& allocator, T& object) {
 		object.~T();
 		allocator.deallocate(&object);
+	}
+
+	/**
+	* @todo documentation
+	*/
+	template <class T> T* allocateArray(IAllocator& allocator, size_t length) {
+		// calculate how many T-sized chucks we need to allocate to store the array length
+		uint8_t headerSize = sizeof(size_t) / sizeof(T);
+		if (sizeof(size_t) % sizeof(T) > 0) 
+			headerSize += 1;
+
+		// allocate extra memory before the array to store its size
+		T* ptr = ((T*) allocator.allocate(sizeof(T) * (length + headerSize), alignof(T))) + headerSize;
+		*( ((size_t*)ptr) - 1 ) = length;
+		
+		// initialize all array elements
+		for (size_t i = 0; i < length; ++i)
+			new (&ptr) T;
+
+		return ptr;
+	}
+
+	/**
+	* @todo documentation
+	*/
+	template <class T> void deallocateArray(IAllocator& allocator, T* array) {
+		// calculate header size
+		uint8_t headerSize = sizeof(size_t) / sizeof(T);
+		if (sizeof(size_t) % sizeof(T) > 0)
+			headerSize += 1;
+
+		// get array length
+		size_t length = *( ((size_t*)array) - 1 );
+
+		// destroy all array elements
+		for (size_t i = 0; i < length; ++i)
+			array.~T();
+
+		// deallocate the memory
+		allocator.deallocate(array - headerSize);
 	}
 }
 
