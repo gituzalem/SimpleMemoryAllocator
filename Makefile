@@ -5,7 +5,6 @@
 #############################################
 
 # TODO: dynamic library building?
-# TODO: separating object files from actual build product?
 
 .PHONY: all clean prebuild static
 AR = ar ru
@@ -34,6 +33,7 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 
 libSimpleMemoryAllocator.a: $(OBJECTS)
 	$(AR) $(BUILD_DIR)/$@ $(OBJECTS)
+	rm -f $(OBJECTS)
 
 clean:
 	rm -rf $(BUILD_DIRECTORY) $(OBJECTS) $(BUILD_DIR)/libSimpleMemoryAllocator.*
