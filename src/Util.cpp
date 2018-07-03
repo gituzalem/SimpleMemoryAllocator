@@ -30,3 +30,7 @@ uint8_t MemoryUtils::getNextAddressAdjustmentWithHeader(void* address, uint8_t a
 
 	return adjustment;
 }
+
+void* MemoryUtils::addToPointer(void* ptr, size_t adj) {
+	return (static_cast<char*>(ptr) + adj);
+}

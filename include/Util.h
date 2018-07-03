@@ -13,6 +13,8 @@ namespace SimpleMemoryAllocator {
 		uintptr_t getNextAlignedAddress(void* address, uint8_t alignment);
 		uint8_t getNextAddressAdjustment(void* address, uint8_t alignment);
 		uint8_t getNextAddressAdjustmentWithHeader(void* address, uint8_t alignment, uint8_t headerSize);
+
+		void* addToPointer(void*, size_t);
 	} // namespace MemoryUtils
 
 

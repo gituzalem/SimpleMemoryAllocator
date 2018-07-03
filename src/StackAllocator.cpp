@@ -18,14 +18,14 @@ void* StackAllocator::allocate(size_t size, uint8_t alignment) {
 	// don't allocate if we need to allocate more than we have free
 	if (m_usedMemory + size + adjustment > m_size) return nullptr;
 
-	uintptr_t alignedAddress = (uintptr_t)(m_top) + adjustment;
+	void* alignedAddress = MemoryUtils::addToPointer(m_top, adjustment);
 
 	// store allocation header before the actual stored data
-	StackAllocationHeader* header = (StackAllocationHeader*)(alignedAddress - sizeof(StackAllocationHeader));
+	StackAllocationHeader* header = (StackAllocationHeader*)MemoryUtils::addToPointer(alignedAddress, -sizeof(StackAllocationHeader));
 	header->adjustment = adjustment;
 
 	m_previousTop = m_top;
-	m_top = (void*)(alignedAddress + size);
+	m_top = MemoryUtils::addToPointer(alignedAddress, size);
 	m_usedMemory += size + adjustment;
 	++m_numAllocations;
 
@@ -35,8 +35,8 @@ void* StackAllocator::allocate(size_t size, uint8_t alignment) {
 void StackAllocator::deallocate(void* ptr) {
 	throw_assert(ptr != nullptr, "deallocated pointer must not be null");
 
-	StackAllocationHeader* header = (StackAllocationHeader*)((uintptr_t)ptr - sizeof(StackAllocationHeader));
-	m_usedMemory -= ((uintptr_t)m_top - (uintptr_t)ptr + header->adjustment);
-	m_top = (void*)((uintptr_t)ptr - header->adjustment);
+	StackAllocationHeader* header = (StackAllocationHeader*)MemoryUtils::addToPointer(ptr, -sizeof(StackAllocationHeader));
+	m_usedMemory -= ((unsigned*)m_top - (unsigned*)ptr + header->adjustment);
+	m_top = MemoryUtils::addToPointer(ptr, header->adjustment);
 	--m_numAllocations;
 }

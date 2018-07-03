@@ -17,12 +17,12 @@ void* LinearAllocator::allocate(size_t size, uint8_t alignment) {
 	// don't allocate if we need to allocate more than we have free
 	if (m_usedMemory + size + adjustment > m_size) return nullptr;
 
-	uintptr_t alignedAddress = (uintptr_t)(m_firstFree) + adjustment;
-	m_firstFree = (void*)(size + alignedAddress);
+	void* alignedAddress = MemoryUtils::addToPointer(m_firstFree, adjustment);
+	m_firstFree = MemoryUtils::addToPointer(alignedAddress, size);
 	m_usedMemory += size + adjustment;
 	++m_numAllocations;
 
-	return (void*)alignedAddress;
+	return alignedAddress;
 }
 
 void LinearAllocator::deallocate(void* ptr) {
