@@ -14,14 +14,14 @@ int main(int argc, char** argv) {
 	const size_t arraySize = 42;
 	
 	// allocate a chunk of working memory with new
-	void* startPtr = ::operator new(memorySize);														// probably add a way to do memory allocations in the constructor
-																										// if no pointer is provided to reduce boilerplate
+	void* startPtr = ::operator new(memorySize);                                                        // probably add a way to do memory allocations in the constructor
+                                                                                                        // if no pointer is provided to reduce boilerplate
 	// instantiate a linear allocator
 	SimpleMemoryAllocator::LinearAllocator linearAllocator(startPtr, memorySize);
 
 	// allocate a single element
-	TestStruct* ts = SimpleMemoryAllocator::allocate<TestStruct>(linearAllocator);						// I already don't like this syntax, probably change it
-	if (ts != nullptr) {																				// to allocator.allocate<class T>(size) syntax soon
+	TestStruct* ts = SimpleMemoryAllocator::allocate<TestStruct>(linearAllocator);                      // I already don't like this syntax, probably change it
+	if (ts != nullptr) {                                                                                // to allocator.allocate<class T>(size) syntax soon
 		ts->field1 = 42;
 		ts->field2 = 'a';
 		ts->field3 = true;
@@ -46,10 +46,10 @@ int main(int argc, char** argv) {
 	}
 
 	// clear the allocator
-	linearAllocator.clear();																			// this syntax looks much clearer than the current one
+	linearAllocator.clear();                                                                            // this syntax looks much clearer than the current one
 
 	// free the working memory
-	::operator delete(startPtr);																		// also free the memory in the allocator if it was 
-																										// allocated inside
+	::operator delete(startPtr);                                                                        // also free the memory in the allocator if it was 
+                                                                                                        // allocated inside
 	return 0;
 }
