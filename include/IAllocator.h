@@ -109,7 +109,7 @@ namespace SimpleMemoryAllocator {
 
 		// destroy all array elements
 		for (size_t i = 0; i < length; ++i)
-			array.~T();
+			array[i].~T();
 
 		// deallocate the memory
 		allocator.deallocate(array - headerSize);
