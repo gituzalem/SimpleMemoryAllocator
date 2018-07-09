@@ -16,6 +16,7 @@ namespace SimpleMemoryAllocator {
 		void* __allocate(size_t, uint8_t);
 		void __deallocate(void*);
 	public:
+		LinearAllocator(size_t);
 		LinearAllocator(void*, size_t);
 		~LinearAllocator();
 

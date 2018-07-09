@@ -3,7 +3,12 @@
 
 using namespace SimpleMemoryAllocator;
 
+PoolAllocator::PoolAllocator(size_t size, size_t objectSize, uint8_t objectAlignment) : PoolAllocator(nullptr, size, objectSize, objectAlignment) { }
+
 PoolAllocator::PoolAllocator(void* start, size_t size, size_t objectSize, uint8_t objectAlignment) : IAllocator(start, size) {
+	if (start == nullptr)
+		start = m_start;
+
 	uint8_t adjustment = MemoryUtils::getNextAddressAdjustment(start, objectAlignment);
 
 	// align only at start, this will make the rest automatically aligned

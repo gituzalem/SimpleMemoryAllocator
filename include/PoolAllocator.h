@@ -20,6 +20,7 @@ namespace SimpleMemoryAllocator {
 		void* __allocate(size_t, uint8_t);
 		void __deallocate(void*);
 	public:
+		PoolAllocator(size_t, size_t, uint8_t);
 		PoolAllocator(void*, size_t, size_t, uint8_t);
 		virtual ~PoolAllocator();
 	};

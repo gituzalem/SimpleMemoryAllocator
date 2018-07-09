@@ -18,6 +18,7 @@ namespace SimpleMemoryAllocator {
 		void* __allocate(size_t, uint8_t);
 		void __deallocate(void*);
 	public:
+		StackAllocator(size_t);
 		StackAllocator(void*, size_t);
 		virtual ~StackAllocator();
 	};

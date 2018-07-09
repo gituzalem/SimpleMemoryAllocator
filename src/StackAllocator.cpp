@@ -3,6 +3,8 @@
 
 using namespace SimpleMemoryAllocator;
 
+StackAllocator::StackAllocator(size_t size) : StackAllocator(nullptr, size) { }
+
 StackAllocator::StackAllocator(void* start, size_t size) : IAllocator(start, size), m_top(m_start), m_previousTop(nullptr) {  }
 
 StackAllocator::~StackAllocator() {

@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
 	startTimer();
 	TestStruct* ts = linearAllocator.allocate<TestStruct>();											// this looks so much better than SimpleMemoryAllocator::allocate(allocator, size)
 	if (ts == nullptr) {                                                                                
-		std::cout << "couldn't allocate a single object, wtf";
+		std::cout << "couldn't allocate a single object, wtf\n";
 	}
 	std::cout << "allocated a single item in " << endTimer() << " clicks, there are " << linearAllocator.getNumAllocations() << " allocations and " << linearAllocator.getUsedMemory() << " bytes of memory used\n";
 
@@ -66,5 +66,18 @@ int main(int argc, char** argv) {
 	// free the working memory
 	::operator delete(startPtr);                                                                        // also free the memory in the allocator if it was 
 	                                                                                                    // allocated inside
+	                         
+	// allocator-managed base memory allocation
+	SimpleMemoryAllocator::LinearAllocator secondLinearAllocator(memorySize);
+
+	startTimer();
+	ts = secondLinearAllocator.allocateArray<TestStruct>(arraySize);
+	if (ts == nullptr) {                                                                                
+		std::cout << "couldn't allocate an array of " << arraySize << " elements\n";
+	}
+	std::cout << "allocated a second single item in " << endTimer() << " clicks, there are " << secondLinearAllocator.getNumAllocations() << " allocations and " << secondLinearAllocator.getUsedMemory() << " bytes of memory used\n";
+
+	secondLinearAllocator.clear();
+
 	return 0;
 }
