@@ -6,14 +6,15 @@
 
 # TODO: dynamic library building?
 
-.PHONY: all clean prebuild static
+.PHONY: all clean prebuild examples
 AR = ar ru
 CXX = g++
-CXXFLAGS = -Wall -std=c++11 -O2
+CXXFLAGS = -Wall -std=c++17 -O2
 TARGETS = static
 
 SOURCE_DIR = src
 BUILD_DIR = build
+EXAMPLES_DIR = examples
 
 SOURCES = $(wildcard $(SOURCE_DIR)/*.cpp)
 OBJECTS = $(subst $(SOURCE_DIR)/,$(BUILD_DIR)/,$(SOURCES:.cpp=.o)) 
@@ -25,15 +26,20 @@ prebuild:
 	mkdir -p $(BUILD_DIR)
 
 # build static library
-static: libSimpleMemoryAllocator.a 
+static: $(BUILD_DIR)/libSimpleMemoryAllocator.a 
 
 # build objects
 $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
-libSimpleMemoryAllocator.a: $(OBJECTS)
-	$(AR) $(BUILD_DIR)/$@ $(OBJECTS)
+$(BUILD_DIR)/libSimpleMemoryAllocator.a: $(OBJECTS)
+	$(AR) $@ $(OBJECTS)
 	rm -f $(OBJECTS)
+
+examples: static exampleLinearAllocator
+
+exampleLinearAllocator: $(EXAMPLES_DIR)/LinearAllocatorExample.cpp
+	$(CXX) $(CXXFLAGS) $< -I./include -L./build -lSimpleMemoryAllocator -o $(BUILD_DIR)/$@.exe
 
 clean:
 	rm -rf $(BUILD_DIRECTORY) $(OBJECTS) $(BUILD_DIR)/libSimpleMemoryAllocator.*
