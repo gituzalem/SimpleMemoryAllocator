@@ -6,8 +6,8 @@
 namespace SimpleMemoryAllocator {
 
 	/**
-	* A custom allocator that allocates memory in a linear fashion. Being the simplest, and therefore
-	* fastest allocator. It cannot deallocate its memory randomly, but rather has to clear it completely.
+	* An allocator that allocates memory in a linear fashion. Being the simplest, and therefore
+	* the fastest allocator. It cannot deallocate its memory randomly, but rather has to clear it completely.
 	*/
 	class LinearAllocator : public IAllocator {
 	private:

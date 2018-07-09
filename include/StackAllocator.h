@@ -6,7 +6,7 @@
 namespace SimpleMemoryAllocator {
 
 	/**
-	* A custom allocator working in a stack fashion. Therefore, all allocated memory must be deallocated
+	* An allocator working like a stack. Therefore, all allocated memory must be deallocated
 	* in a LIFO fashion: if you allocated A first and then B, you must first deallocate B before 
 	* deallocating A.
 	*/

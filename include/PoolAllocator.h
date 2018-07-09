@@ -6,7 +6,7 @@
 namespace SimpleMemoryAllocator {
 
 	/**
-	* A custom allocator working as a "pool" of equally sized objects. Since the size of the
+	* An allocator working as a "pool" of equally sized objects. Since the size of the
 	* objects is constant and known in advance, this reduces the memory and processing overhead.
 	* Also negates the bad effect of memory fragmentation, sice every time a block is freed, it is 
 	* guaranteed to be able to hold another one in its place.
