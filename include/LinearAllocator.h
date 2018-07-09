@@ -13,12 +13,12 @@ namespace SimpleMemoryAllocator {
 	private:
 		void* m_firstFree;
 
+		void* __allocate(size_t, uint8_t);
+		void __deallocate(void*);
 	public:
 		LinearAllocator(void*, size_t);
 		~LinearAllocator();
 
-		void* allocate(size_t, uint8_t);
-		void deallocate(void*);
 		void clear();
 	};
 

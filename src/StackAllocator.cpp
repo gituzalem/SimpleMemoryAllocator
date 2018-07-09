@@ -10,7 +10,7 @@ StackAllocator::~StackAllocator() {
 	m_previousTop = nullptr;
 }
 
-void* StackAllocator::allocate(size_t size, uint8_t alignment) {
+void* StackAllocator::__allocate(size_t size, uint8_t alignment) {
 	throw_assert(size > 0, "allocated size must be larger than 0");
 
 	uint8_t adjustment = MemoryUtils::getNextAddressAdjustmentWithHeader(m_top, alignment, sizeof(StackAllocationHeader));
@@ -32,7 +32,7 @@ void* StackAllocator::allocate(size_t size, uint8_t alignment) {
 	return (void*)alignedAddress;
 }
 
-void StackAllocator::deallocate(void* ptr) {
+void StackAllocator::__deallocate(void* ptr) {
 	throw_assert(ptr != nullptr, "deallocated pointer must not be null");
 
 	StackAllocationHeader* header = (StackAllocationHeader*)MemoryUtils::addToPointer(ptr, -sizeof(StackAllocationHeader));

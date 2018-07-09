@@ -16,12 +16,12 @@ namespace SimpleMemoryAllocator {
 		void** m_freeList;
 		size_t m_objectSize;
 		uint8_t m_objectAlignment;
+
+		void* __allocate(size_t, uint8_t);
+		void __deallocate(void*);
 	public:
 		PoolAllocator(void*, size_t, size_t, uint8_t);
 		virtual ~PoolAllocator();
-
-		void* allocate(size_t, uint8_t);
-		void deallocate(void*);
 	};
 
 }

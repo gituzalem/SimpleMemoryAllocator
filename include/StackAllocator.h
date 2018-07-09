@@ -14,12 +14,12 @@ namespace SimpleMemoryAllocator {
 	private:
 		void* m_top;
 		void* m_previousTop;
+
+		void* __allocate(size_t, uint8_t);
+		void __deallocate(void*);
 	public:
 		StackAllocator(void*, size_t);
 		virtual ~StackAllocator();
-
-		void* allocate(size_t, uint8_t);
-		void deallocate(void*);
 	};
 
 	struct StackAllocationHeader {

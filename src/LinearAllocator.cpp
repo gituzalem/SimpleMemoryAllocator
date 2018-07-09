@@ -9,7 +9,7 @@ LinearAllocator::~LinearAllocator() {
 	m_firstFree = nullptr;
 }
 
-void* LinearAllocator::allocate(size_t size, uint8_t alignment) {
+void* LinearAllocator::__allocate(size_t size, uint8_t alignment) {
 	throw_assert(size > 0, "allocated size must be larger than 0");
 
 	uint8_t adjustment = MemoryUtils::getNextAddressAdjustment(m_firstFree, alignment);
@@ -25,7 +25,7 @@ void* LinearAllocator::allocate(size_t size, uint8_t alignment) {
 	return alignedAddress;
 }
 
-void LinearAllocator::deallocate(void* ptr) {
+void LinearAllocator::__deallocate(void* ptr) {
 	throw_assert(false, "method deallocate() is not usable in a linear allocator, use method clear() instead");
 }
 

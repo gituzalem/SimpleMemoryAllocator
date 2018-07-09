@@ -24,7 +24,7 @@ PoolAllocator::~PoolAllocator() {
 	m_freeList = nullptr;
 }
 
-void* PoolAllocator::allocate(size_t size, uint8_t alignment) {
+void* PoolAllocator::__allocate(size_t size, uint8_t alignment) {
 	throw_assert(size > 0, "allocated size must be larger than 0");
 
 	// return null pointer if there are no more cells left
@@ -38,7 +38,7 @@ void* PoolAllocator::allocate(size_t size, uint8_t alignment) {
 	return ptr;
 }
 
-void PoolAllocator::deallocate(void* ptr) {
+void PoolAllocator::__deallocate(void* ptr) {
 	throw_assert(ptr != nullptr, "deallocated pointer must not be null");
 
 	*((void**)ptr) = m_freeList;
