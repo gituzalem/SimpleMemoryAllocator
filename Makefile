@@ -21,14 +21,20 @@ OBJECTS = $(subst $(SOURCE_DIR)/,$(BUILD_DIR)/,$(SOURCES:.cpp=.o))
 
 all: prebuild $(TARGETS)
 
-# any pre-build actions required
+  ##################################
+  # any pre-build actions required #
+##################################################################################
 prebuild:
 	mkdir -p $(BUILD_DIR)
 
-# build static library
+  ########################
+  # build static library #
+##################################################################################
 static: $(BUILD_DIR)/libSimpleMemoryAllocator.a 
 
-# build objects
+  #################
+  # build objects #
+##################################################################################
 $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
@@ -36,10 +42,17 @@ $(BUILD_DIR)/libSimpleMemoryAllocator.a: $(OBJECTS)
 	$(AR) $@ $(OBJECTS)
 	rm -f $(OBJECTS)
 
+  ##################
+  # build examples #
+##################################################################################
 examples: static exampleLinearAllocator
 
 exampleLinearAllocator: $(EXAMPLES_DIR)/LinearAllocatorExample.cpp
 	$(CXX) $(CXXFLAGS) $< -I./include -L./build -lSimpleMemoryAllocator -o $(BUILD_DIR)/$@.exe
 
+
+  #########
+  # clean #
+##################################################################################
 clean:
 	rm -rf $(BUILD_DIRECTORY) $(OBJECTS) $(BUILD_DIR)/libSimpleMemoryAllocator.*
