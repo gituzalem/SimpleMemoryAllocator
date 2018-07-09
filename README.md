@@ -83,6 +83,7 @@ You can also allocate/deallocate arrays like this:
 ### CHANGELOG
 v0.2.1
   - expanded readme
+  - source files and Makefile cosmetic changes
 
 v0.2
   - changed general allocate/deallocate interface functions from free functions to IAllocator member functions
