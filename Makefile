@@ -4,43 +4,80 @@
 #  Date: 27. 6. 2018                        #
 #############################################
 
-# TODO: dynamic library building?
-
-.PHONY: all clean prebuild examples
+.PHONY: all clean prebuild postbuild examples
 AR = ar ru
 CXX = g++
 CXXFLAGS = -Wall -std=c++17 -O2
-TARGETS = static
+TARGETS = static_int dynamic_int
 
 SOURCE_DIR = src
 BUILD_DIR = build
 EXAMPLES_DIR = examples
 
-SOURCES = $(wildcard $(SOURCE_DIR)/*.cpp)
-OBJECTS = $(subst $(SOURCE_DIR)/,$(BUILD_DIR)/,$(SOURCES:.cpp=.o)) 
+STATIC_BUILD_PATH = $(BUILD_DIR)/libSimpleMemoryAllocator.a
+DYNAMIC_BUILD_PATH = $(BUILD_DIR)/libSimpleMemoryAllocator.so
 
-all: prebuild $(TARGETS)
+SOURCES = $(wildcard $(SOURCE_DIR)/*.cpp)
+OBJECTS = $(subst $(SOURCE_DIR)/,$(BUILD_DIR)/obj/,$(SOURCES:.cpp=.o))
+OBJECTS_PIC = $(subst $(SOURCE_DIR)/,$(BUILD_DIR)/pic/,$(SOURCES:.cpp=.o))
+
+all: prebuild $(TARGETS) postbuild
 
   ##################################
   # any pre-build actions required #
 ##################################################################################
 prebuild:
-	mkdir -p $(BUILD_DIR)
+	@echo "========== PREBUILD ACTIONS =========="
+	mkdir -p $(BUILD_DIR)/obj/
+	mkdir -p $(BUILD_DIR)/pic/
+	@echo ""
+
+
+  ###################################
+  # any post-build actions required #
+##################################################################################
+postbuild:
+	@echo ""
+	@echo "========== POSTBUILD ACTIONS =========="
+#	rm -f $(OBJECTS)
+
 
   ########################
   # build static library #
 ##################################################################################
-static: $(BUILD_DIR)/libSimpleMemoryAllocator.a 
+static: prebuild static_int postbuild
+
+static_int: $(STATIC_BUILD_PATH)
+
+$(STATIC_BUILD_PATH): $(OBJECTS)
+	@echo ""
+	@echo "========== BUILDING STATIC LIBRARY =========="
+	$(AR) $@ $(OBJECTS)
+
+
+  #########################
+  # build dynamic library #
+##################################################################################
+dynamic: prebuild dynamic_int postbuild
+
+dynamic_int: static_int $(DYNAMIC_BUILD_PATH)
+
+$(DYNAMIC_BUILD_PATH): $(OBJECTS_PIC)
+	@echo ""
+	@echo "========== BUILDING DYNAMIC LIBRARY =========="
+	$(CXX) $(OBJECTS_PIC) -shared -o $@
+
 
   #################
   # build objects #
 ##################################################################################
-$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp
+$(BUILD_DIR)/obj/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
-$(BUILD_DIR)/libSimpleMemoryAllocator.a: $(OBJECTS)
-	$(AR) $@ $(OBJECTS)
-	rm -f $(OBJECTS)
+$(BUILD_DIR)/pic/%.o: $(SOURCE_DIR)/%.cpp
+	$(CXX) -c -fPIC $(CXXFLAGS) $< -o $@
+
+
 
   ##################
   # build examples #
@@ -51,8 +88,13 @@ exampleLinearAllocator: $(EXAMPLES_DIR)/LinearAllocatorExample.cpp
 	$(CXX) $(CXXFLAGS) $< -I./include -L./build -lSimpleMemoryAllocator -o $(BUILD_DIR)/$@.exe
 
 
+
   #########
   # clean #
 ##################################################################################
 clean:
-	rm -rf $(BUILD_DIRECTORY) $(OBJECTS) $(BUILD_DIR)/libSimpleMemoryAllocator.*
+	@echo ""
+	@echo "========== CLEANING =========="
+	rm -rf $(BUILD_DIRECTORY) $(OBJECTS) $(OBJECTS_PIC) $(STATIC_BUILD_PATH) $(DYNAMIC_BUILD_PATH)
+
+

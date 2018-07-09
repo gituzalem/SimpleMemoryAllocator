@@ -7,7 +7,7 @@ This library is licenced under the MIT Licence.
 
 
 ### USAGE
-Just `#include "SimpleMemoryAllocator.h"` from the `includes` folder and link against `libSimpleMemoryAllocator.a` (or your local machine equivalent, dynamic linking coming in future) and you're set! Now you just need to pick an allocator, initialize it, and use it to manage your heap allocation/deallocations much quicker than a native C++ new/delete.
+Just `#include "SimpleMemoryAllocator.h"` from the `includes` folder and link against `-lSimpleMemoryAllocator` (you can choose from both static and dynamic linking) and you're set! Now you just need to pick an allocator, initialize it, and use it to manage your heap allocation/deallocations much quicker than a native C++ new/delete.
 
 There are currently these allocators implemented:
   - `LinearAllocator` - An allocator that allocates memory in a linear fashion. Being the simplest, and therefore 
@@ -75,7 +75,6 @@ You can also allocate/deallocate arrays like this:
   - add a system to not allow deallocating an array with an single object deallocate() and vice versa
   - make allocators thread-safe
   - make a VS solution for MSVC users
-  - build a dynamic library as well
   - more allocators
   - new features? time will tell...
   
@@ -84,6 +83,8 @@ You can also allocate/deallocate arrays like this:
 v0.2.1
   - expanded readme
   - source files and Makefile cosmetic changes
+  - restructured build dir
+  - you can now also build a dynamic library with Makefile
 
 v0.2
   - changed general allocate/deallocate interface functions from free functions to IAllocator member functions
