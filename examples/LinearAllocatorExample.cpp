@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 	
 	// allocate a chunk of working memory with new
 	void* startPtr = ::operator new(memorySize);                                                        // probably add a way to do memory allocations in the constructor
-                                                                                                        // if no pointer is provided to reduce boilerplate
+	                                                                                                    // if no pointer is provided to reduce boilerplate
 	// instantiate a linear allocator
 	SimpleMemoryAllocator::LinearAllocator linearAllocator(startPtr, memorySize);
 
@@ -50,6 +50,6 @@ int main(int argc, char** argv) {
 
 	// free the working memory
 	::operator delete(startPtr);                                                                        // also free the memory in the allocator if it was 
-                                                                                                        // allocated inside
+	                                                                                                    // allocated inside
 	return 0;
 }
