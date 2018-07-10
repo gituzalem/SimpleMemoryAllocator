@@ -60,7 +60,7 @@ $(STATIC_BUILD_PATH): $(OBJECTS)
 ##################################################################################
 dynamic: prebuild dynamic_int postbuild
 
-dynamic_int: static_int $(DYNAMIC_BUILD_PATH)
+dynamic_int: $(DYNAMIC_BUILD_PATH)
 
 $(DYNAMIC_BUILD_PATH): $(OBJECTS_PIC)
 	@echo ""
