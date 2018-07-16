@@ -12,7 +12,7 @@ namespace SimpleMemoryAllocator {
 	*/
 	class IAllocator {
 	private:
-		bool	m_handlingMemoryInternally = false;
+		bool	m_handlingMemoryInternally = false;	/// a boolean flag to indicate the allocator is handling the system memory allocation
 
 	protected:
 		void*	m_start;            /// pointer to the beginning of the allocated memory
@@ -24,16 +24,31 @@ namespace SimpleMemoryAllocator {
 		////////////////////////////////////////////////////////////////////////////
 		// main logic methods, these are to be implemented in specific allocators //
 		//////////////////////////////////////////////////////////////////////////////////////////////
+		/**
+		* @brief An internal method handling new variable allocation. Specific for each allocator type.
+		*
+		* @param	size	size of allocated variable in bytes
+		* @param	alignment	memory alignment of the variable type
+		*
+		* @return a pointer to a newly allocated variable
+		*/
 		virtual void* __allocate(size_t size, uint8_t alignment = 0) = 0;
+
+		/**
+		* @brief An internal method handling variable deallocation. Specific for each allocator type.
+		*
+		* @param	ptr		pointer to a memory previously allocated by __allocate()
+		*/
 		virtual void __deallocate(void* ptr) = 0;
 
 	public:
 		/**
-		* Standard constructor, initializes the basic necessary allocator data. If void* start
-		* is nullptr, it uses native C++ ::operator new to allocate needed memory.
+		* @brief Standard constructor, initializes the basic necessary allocator data. 
+		*
+		* If start is nullptr, it uses native C++ ::operator new to allocate needed system memory.
 		* 
-		* @param start a pointer to the beginning of the allocated memory space
-		* @param size size of the allocated memory space in bytes
+		* @param	start	a pointer to the beginning of the allocated memory space
+		* @param	size	size of the allocated memory space in bytes
 		*/
 		IAllocator(void* start, size_t size) {
 			m_start = (start != nullptr ? start : allocateMemoryNative(size));
@@ -43,7 +58,7 @@ namespace SimpleMemoryAllocator {
 		}
 
 		/**
-		* Default destructor, able to detect nondeallocated memory and possible deallocation faults
+		* @brief Default destructor, able to detect nondeallocated memory and possible deallocation faults
 		*/
 		virtual ~IAllocator() {
 			throw_assert(m_numAllocations == 0 || m_usedMemory == 0, "all memory should be deallocated");
@@ -58,11 +73,22 @@ namespace SimpleMemoryAllocator {
 		///////////////////////////////////////////////////
 		// native memory allocation/deallocation methods //
 		//////////////////////////////////////////////////////////////////////////////////////////////
-		inline void* allocateMemoryNative(size_t size) {
+
+		/**
+		* @brief Allocates system memory using ::operator new.
+		*
+		* @param	sizeBytes	allocated memory size in bytes
+		*
+		* @return a void pointer to the newly allocated memory
+		*/
+		inline void* allocateMemoryNative(size_t sizeBytes) {
 			m_handlingMemoryInternally = true;
-			return ::operator new(size);
+			return ::operator new(sizeBytes);
 		}
 		
+		/**
+		* @brief Deallocates the system memory allocated by allocateMemoryNative()
+		*/
 		inline void deallocateMemoryNative() {
 			if (m_handlingMemoryInternally)
 				::operator delete(m_start);
@@ -72,9 +98,13 @@ namespace SimpleMemoryAllocator {
 		//////////////////////////////
 		// interface getter methods //
 		//////////////////////////////////////////////////////////////////////////////////////////////
+		/// initial memory position getter
 		void* getStart() const { return m_start; }
+		/// allocator size getter
 		size_t getSize() const { return m_size; }
+		/// memory used by allocator (in bytes) getter
 		size_t getUsedMemory() const { return m_usedMemory; }
+		/// number of active allocations getter
 		size_t getNumAllocations() const { return m_numAllocations; }
 
 
@@ -83,7 +113,11 @@ namespace SimpleMemoryAllocator {
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
 		/**
-		* Allocates a single object of specified class.
+		* @brief Allocates a single object of specified class.
+		*
+		* @param	T	template type of the new variable
+		*
+		* @return a pointer to the newly allocated class instance
 		*/
 		template <class T> T* allocate() {
 			return new (__allocate(sizeof(T), alignof(T))) T;
@@ -91,18 +125,22 @@ namespace SimpleMemoryAllocator {
 
 
 		/**
-		* Allocates a single object of specified class with copy constructor.
+		* @brief Allocates a single object of specified class with copy constructor.
 		* 
-		* @param t an instance of class T to be copied to the newly allocated one
+		* @param	T	template type of the new variable
+		* @param	t	an instance of class T to be copied to the newly allocated one
+		*
+		* @return a pointer to the newly allocated class instance
 		*/
 		template <class T> T* allocate(const T& t) {
 			return new (__allocate(sizeof(T), alignof(T))) T(t);
 		}
 
 		/**
-		* Deallocates a single object specified by a pointer.
+		* @brief Deallocates a single object specified by a pointer.
 		* 
-		* @param a pointer to a previously allocated object
+		* @param	T	template type of the deleted variable
+		* @param	a	pointer to a previously allocated object
 		*/
 		template <class T> void deallocate(T& object) {
 			object.~T();
@@ -110,9 +148,12 @@ namespace SimpleMemoryAllocator {
 		}
 
 		/**
-		* Allocates an array of objects of specified class.
+		* @brief Allocates an array of objects of specified class.
 		* 
-		* @param length size of the array
+		* @param	T	template type of the new array
+		* @param	length	size of the array
+		*
+		* @return a pointer to the newly allocated class instance array
 		*/
 		template <class T> T* allocateArray(size_t length) {
 			throw_assert(length > 0, "allocated array length must be larger than 0");
@@ -134,9 +175,10 @@ namespace SimpleMemoryAllocator {
 		}
 
 		/**
-		* Deallocates an array of objects specified by a pointer.
+		* @brief Deallocates an array of objects specified by a pointer.
 		* 
-		* @param array a pointer to a previously allocated array
+		* @param	T	template type of the deleted array
+		* @param	array	a pointer to a previously allocated array
 		*/
 		template <class T> void deallocateArray(T* array) {
 			throw_assert(array != nullptr, "deallocated array pointer must not be null");
