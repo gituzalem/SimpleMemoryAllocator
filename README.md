@@ -28,8 +28,10 @@ A simple usage example:
 
 int main() {
   size_t memorySize = 4096;
+  size_t objectSize = sizeof(Type);
+  uint8_t objectAlignment = alignof(Type);
   
-  SimpleMemoryAllocator::PoolAllocator poolAllocator(memorySize);
+  SimpleMemoryAllocator::PoolAllocator poolAllocator(memorySize, objectSize, objectAlignment);
   
   Type* p = poolAllocator.allocate<Type>();
   
@@ -47,7 +49,7 @@ In this case, memory new/delete is handled by the allocator. But you may want to
 
   // ...
 
-  SimpleMemoryAllocator::PoolAllocator poolAllocator(memoryPointer, memorySize);
+  SimpleMemoryAllocator::LinearAllocator linearAllocator(memoryPointer, memorySize);
 
   // ...
 
@@ -57,7 +59,7 @@ You can also allocate/deallocate arrays like this:
 ```C++
   // ...
 
-  SimpleMemoryAllocator::PoolAllocator poolAllocator(memorySize);
+  SimpleMemoryAllocator::PoolAllocator poolAllocator<Type>(numObjects);
   
   Type* arr = poolAllocator.allocateArray<Type>(arraySize);
   
