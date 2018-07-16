@@ -3,9 +3,9 @@
 
 using namespace SimpleMemoryAllocator;
 
-LinearAllocator::LinearAllocator(size_t size) : IAllocator(nullptr, size), m_firstFree(m_start) { }
+LinearAllocator::LinearAllocator(size_t memorySize) : IAllocator(nullptr, memorySize), m_firstFree(m_start) { }
 
-LinearAllocator::LinearAllocator(void* start, size_t size) : IAllocator(start, size), m_firstFree(m_start) { }
+LinearAllocator::LinearAllocator(void* memoryPtr, size_t memorySize) : IAllocator(memoryPtr, memorySize), m_firstFree(m_start) { }
 
 LinearAllocator::~LinearAllocator() {
 	m_firstFree = nullptr;
