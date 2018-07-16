@@ -7,6 +7,7 @@ uintptr_t MemoryUtils::getNextAlignedAddress(void* address, uint8_t alignment) {
 }
 
 uint8_t MemoryUtils::getNextAddressAdjustment(void* address, uint8_t alignment) {
+	// adjustment <= alignment
 	auto adjustment = (alignment - ((uintptr_t)(address) & (alignment - 1)));
 
 	if (adjustment == alignment)
@@ -31,6 +32,6 @@ uint8_t MemoryUtils::getNextAddressAdjustmentWithHeader(void* address, uint8_t a
 	return adjustment;
 }
 
-void* MemoryUtils::addToPointer(void* ptr, size_t adj) {
-	return (static_cast<char*>(ptr) + adj);
+void* MemoryUtils::addToPointer(void* address, size_t add) {
+	return (static_cast<char*>(address) + add);
 }

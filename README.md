@@ -87,6 +87,8 @@ v0.2.1
   - source files and Makefile cosmetic changes
   - restructured build dir
   - you can now also build a dynamic library with Makefile
+  - added a more intuitive constructor for PoolAllocator
+  - provided documentation for IAllocator, PoolAllocator classes and MemoryUtils namespace and functions
 
 v0.2
   - changed general allocate/deallocate interface functions from free functions to IAllocator member functions
