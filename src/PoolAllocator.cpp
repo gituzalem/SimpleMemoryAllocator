@@ -3,20 +3,26 @@
 
 using namespace SimpleMemoryAllocator;
 
-PoolAllocator::PoolAllocator(size_t size, size_t objectSize, uint8_t objectAlignment) : PoolAllocator(nullptr, size, objectSize, objectAlignment) { }
+template <class T>
+PoolAllocator::PoolAllocator(size_t poolSize) : PoolAllocator(nullptr, poolSize*sizeof(T) + alignof(T), sizeof(T), alignof(T)) { }
 
-PoolAllocator::PoolAllocator(void* start, size_t size, size_t objectSize, uint8_t objectAlignment) : IAllocator(start, size) {
-	if (start == nullptr)
-		start = m_start;
+template <class T>
+PoolAllocator::PoolAllocator(void* memoryPtr, size_t poolSize) : PoolAllocator(memoryPtr, poolSize*sizeof(T) + alignof(T), sizeof(T), alignof(T)) { }
 
-	uint8_t adjustment = MemoryUtils::getNextAddressAdjustment(start, objectAlignment);
+PoolAllocator::PoolAllocator(size_t memorySize, size_t objectSize, uint8_t objectAlignment) : PoolAllocator(nullptr, memorySize, objectSize, objectAlignment) { }
 
-	// align only at start, this will make the rest automatically aligned
-	m_freeList = (void**)MemoryUtils::addToPointer(start, adjustment);
+PoolAllocator::PoolAllocator(void* memoryPtr, size_t memorySize, size_t objectSize, uint8_t objectAlignment) : IAllocator(memoryPtr, memorySize) {
+	if (memoryPtr == nullptr)
+		memoryPtr = m_start;
+
+	uint8_t adjustment = MemoryUtils::getNextAddressAdjustment(memoryPtr, objectAlignment);
+
+	// align only at memoryPtr, this should make the rest automatically aligned
+	m_freeList = (void**)MemoryUtils::addToPointer(memoryPtr, adjustment);
 
 	// initialize the free cell linked list
 	// each node free node n initially points to node n+1 and the last node points to null
-	size_t numObjects = (size - adjustment) / objectSize;
+	size_t numObjects = (memorySize - adjustment) / objectSize;
 	void** ptr = m_freeList;
 	for (size_t i = 0; i < numObjects - 1; ++i) {
 		*ptr = MemoryUtils::addToPointer(ptr, objectSize);
