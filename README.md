@@ -70,18 +70,26 @@ You can also allocate/deallocate arrays like this:
   // ...
 ```
 
+### HOW TO BUILD
+Create a build directory (e.g. `mkdir build`) in the root directory, enter it (e.g. `cd build`) and from there, invoke CMake with the parent folder as the argument (e.g. `cmake ..`). This will generate all the necessary build files (Makefile for Unix, VS solution for MSVC) for your current platform, from which you can build the libraries and examples, which will be located in `output` directory of the root directory.
+
 
 ### FUTURE PLANS (roughly sorted by descending priority)
   - create/add a logger
   - add (more) examples and benchmarks
   - add a system to not allow deallocating an array with an single object deallocate() and vice versa
-  - make allocators thread-safe
-  - make a VS solution for MSVC users
+  - reallocation support for easier debugging
+  - add the option to make allocators thread-safe
   - more allocators
   - new features? time will tell...
   
 
 ### CHANGELOG
+v0.2.2
+  - changed project structure
+  - switched from Makefile to CMake as build system
+  - 
+
 v0.2.1
   - expanded readme
   - source files and Makefile cosmetic changes

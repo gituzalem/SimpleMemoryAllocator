@@ -1,4 +1,4 @@
-#include "SimpleMemoryAllocator.h"
+#include "../include/SimpleMemoryAllocator.h"
 #include <iostream>
 #include <ctime>
 

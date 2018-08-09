@@ -3,7 +3,8 @@
 
 #include <cstddef>
 #include <cstdint>
-#include "Util.h"
+#include "AssertException.h"
+#include "../mem_utils/MemUtils.h"
 
 namespace SimpleMemoryAllocator {
 

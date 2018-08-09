@@ -1,5 +1,4 @@
-#include "../include/LinearAllocator.h"
-#include "../include/Util.h"
+#include "LinearAllocator.h"
 
 using namespace SimpleMemoryAllocator;
 
