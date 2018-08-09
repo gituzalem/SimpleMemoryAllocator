@@ -88,7 +88,6 @@ Create a build directory (e.g. `mkdir build`) in the root directory, enter it (e
 v0.2.2
   - changed project structure
   - switched from Makefile to CMake as build system
-  - 
 
 v0.2.1
   - expanded readme
