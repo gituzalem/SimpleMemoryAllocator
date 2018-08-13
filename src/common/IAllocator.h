@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <mutex>
 #include "AssertException.h"
 #include "../mem_utils/MemUtils.h"
 
@@ -13,13 +14,14 @@ namespace SimpleMemoryAllocator {
 	*/
 	class IAllocator {
 	private:
-		bool	m_handlingMemoryInternally = false;	/// a boolean flag to indicate the allocator is handling the system memory allocation
+		bool	    m_handlingMemoryInternally = false;  /// a boolean flag to indicate the allocator is handling the system memory allocation
+		std::mutex  m_allocatorMutex;
 
 	protected:
-		void*	m_start;            /// pointer to the beginning of the allocated memory
-		size_t	m_size;             /// size of the allocated memory in bytes
-		size_t	m_usedMemory;       /// amount of used memory in bytes
-		size_t	m_numAllocations;   /// allocation counter, increments with allocations and decrements with deallocations
+		void*       m_start;                             /// pointer to the beginning of the allocated memory
+		size_t      m_size;                              /// size of the allocated memory in bytes
+		size_t      m_usedMemory;                        /// amount of used memory in bytes
+		size_t      m_numAllocations;                    /// allocation counter, increments with allocations and decrements with deallocations
 
 
 		////////////////////////////////////////////////////////////////////////////
@@ -28,8 +30,8 @@ namespace SimpleMemoryAllocator {
 		/**
 		* @brief An internal method handling new variable allocation. Specific for each allocator type.
 		*
-		* @param	size	size of allocated variable in bytes
-		* @param	alignment	memory alignment of the variable type
+		* @param	size        size of allocated variable in bytes
+		* @param	alignment   memory alignment of the variable type
 		*
 		* @return a pointer to a newly allocated variable
 		*/
@@ -38,7 +40,7 @@ namespace SimpleMemoryAllocator {
 		/**
 		* @brief An internal method handling variable deallocation. Specific for each allocator type.
 		*
-		* @param	ptr		pointer to a memory previously allocated by __allocate()
+		* @param	ptr         pointer to a memory previously allocated by __allocate()
 		*/
 		virtual void __deallocate(void* ptr) = 0;
 
@@ -48,8 +50,8 @@ namespace SimpleMemoryAllocator {
 		*
 		* If start is nullptr, it uses native C++ ::operator new to allocate needed system memory.
 		* 
-		* @param	start	a pointer to the beginning of the allocated memory space
-		* @param	size	size of the allocated memory space in bytes
+		* @param	start       a pointer to the beginning of the allocated memory space
+		* @param	size        size of the allocated memory space in bytes
 		*/
 		IAllocator(void* start, size_t size) {
 			m_start = (start != nullptr ? start : allocateMemoryNative(size));
@@ -124,6 +126,17 @@ namespace SimpleMemoryAllocator {
 			return new (__allocate(sizeof(T), alignof(T))) T;
 		}
 
+		/**
+		* @brief Allocates a single object of specified class in a thread-safe manner.
+		*
+		* @param	T	template type of the new variable
+		*
+		* @return a pointer to the newly allocated class instance
+		*/
+		template <class T> T* allocate_threadSafe() {
+			std::lock_guard<std::mutex> lock(m_allocatorMutex);
+			return allocate<T>();
+		}
 
 		/**
 		* @brief Allocates a single object of specified class with copy constructor.
@@ -138,6 +151,19 @@ namespace SimpleMemoryAllocator {
 		}
 
 		/**
+		* @brief Allocates a single object of specified class with copy constructor in a thread-safe manner.
+		* 
+		* @param	T	template type of the new variable
+		* @param	t	an instance of class T to be copied to the newly allocated one
+		*
+		* @return a pointer to the newly allocated class instance
+		*/
+		template <class T> T* allocate_threadSafe(const T& t) {
+			std::lock_guard<std::mutex> lock(m_allocatorMutex);
+			return allocate<T>(t);
+		}
+
+		/**
 		* @brief Deallocates a single object specified by a pointer.
 		* 
 		* @param	T	template type of the deleted variable
@@ -146,6 +172,17 @@ namespace SimpleMemoryAllocator {
 		template <class T> void deallocate(T& object) {
 			object.~T();
 			__deallocate(&object);
+		}
+
+		/**
+		* @brief Deallocates a single object specified by a pointer in a thread-safe manner.
+		* 
+		* @param	T	template type of the deleted variable
+		* @param	a	pointer to a previously allocated object
+		*/
+		template <class T> void deallocate_threadSafe(T& object) {
+			std::lock_guard<std::mutex> lock(m_allocatorMutex);
+			deallocate(t);
 		}
 
 		/**
@@ -176,6 +213,19 @@ namespace SimpleMemoryAllocator {
 		}
 
 		/**
+		* @brief Allocates an array of objects of specified class in a thread-safe manner.
+		* 
+		* @param	T	template type of the new array
+		* @param	length	size of the array
+		*
+		* @return a pointer to the newly allocated class instance array
+		*/
+		template <class T> T* allocateArray_threadSafe(size_t length) {
+			std::lock_guard<std::mutex> lock(m_allocatorMutex);
+			return allocateArray<T>(length);
+		}
+
+		/**
 		* @brief Deallocates an array of objects specified by a pointer.
 		* 
 		* @param	T	template type of the deleted array
@@ -198,6 +248,17 @@ namespace SimpleMemoryAllocator {
 
 			// deallocate the memory
 			__deallocate(array - headerSize);
+		}
+
+		/**
+		* @brief Deallocates an array of objects specified by a pointer in a thread-safe manner.
+		* 
+		* @param	T	template type of the deleted array
+		* @param	array	a pointer to a previously allocated array
+		*/
+		template <class T> void deallocateArray_threadSafe(T* array) {
+			std::lock_guard<std::mutex> lock(m_allocatorMutex);
+			deallocateArray(array);
 		}
 	};
 }
