@@ -1,5 +1,6 @@
 #include "../include/SimpleMemoryAllocator.h"
 #include <iostream>
+#include <cstring>
 #include <ctime>
 
 struct TestStruct {
@@ -23,11 +24,42 @@ int endTimer() {
 	return ret;
 }
 
+void _printSection(const char* a_sectionName, char a_horizontalChar = '-', int a_bottomLineLength = 80) {
+	const int nameSize = strlen(a_sectionName);
+
+	// print tab top
+	std::cout << "\n+" << a_horizontalChar;
+	for(int i = 0; i < nameSize; ++i) std::cout << a_horizontalChar;
+	std::cout << a_horizontalChar << "+\n";
+
+	std::cout << "| " << a_sectionName << " |\n";
+
+	// print tab bottom
+	std::cout << "+" << a_horizontalChar;
+	for(int i = 0; i < nameSize; ++i) std::cout << a_horizontalChar;
+	std::cout << a_horizontalChar << "+";
+	for(int i = 0; i < (a_bottomLineLength - nameSize - 4); ++i) std::cout << a_horizontalChar;
+	std::cout << "\n";
+}
+
+void printMainSection(const char* a_sectionName, int a_bottomLineLength = 80) {
+	_printSection(a_sectionName, '=', a_bottomLineLength);
+}
+
+void printSubSection(const char* a_sectionName, int a_bottomLineLength = 80) {
+	_printSection(a_sectionName, '-', a_bottomLineLength);
+}
+
 int main(int argc, char** argv) {
 
 	const size_t memorySize = 4096*4096;
-	const size_t arraySize = 42*42;
-	
+	const size_t arraySize = 42;
+
+	//////////////////////
+	// BASIC OPERATIONS //
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	printMainSection("BASIC OPERATIONS");
+
 	// allocate a chunk of working memory with new
 	startTimer();
 	void* startPtr = ::operator new(memorySize);                                                        // probably add a way to do memory allocations in the constructor
@@ -78,6 +110,47 @@ int main(int argc, char** argv) {
 	std::cout << "allocated a second single item in " << endTimer() << " clicks, there are " << secondLinearAllocator.getNumAllocations() << " allocations and " << secondLinearAllocator.getUsedMemory() << " bytes of memory used\n";
 
 	secondLinearAllocator.clear();
+
+	///////////////////////
+	// BENCHMARK VS. NEW //
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	printMainSection("BENCHMARK");
+
+	const int TEST_ARRAY_SIZE = 200000;
+
+	TestStruct* arr[TEST_ARRAY_SIZE];
+
+	printSubSection("NATIVE NEW");
+	startTimer();
+	for(int i = 0; i < TEST_ARRAY_SIZE; ++i) {
+		arr[i] = new TestStruct;
+	}
+	std::cout << "C++ native new: allocated " << TEST_ARRAY_SIZE << " pointers to TestStruct in " << endTimer() << " ms.\n";
+
+	startTimer();
+	for(int i = 0; i < TEST_ARRAY_SIZE; ++i) {
+		delete arr[i];
+	}
+	std::cout << "C++ native new: deallocated " << TEST_ARRAY_SIZE << " pointers to TestStruct in " << endTimer() << " ms.\n";
+
+
+	printSubSection("LINEAR ALLOCATOR");
+
+	startTimer();
+	SimpleMemoryAllocator::LinearAllocator benchmarkLinearAllocator(TEST_ARRAY_SIZE * sizeof(TestStruct));
+	std::cout << "LinearAllocator: allocated memory for " << TEST_ARRAY_SIZE << " pointers to TestStruct in " << endTimer() << " ms.\n";
+
+	startTimer();
+	for(int i = 0; i < TEST_ARRAY_SIZE; ++i) {
+		arr[i] = benchmarkLinearAllocator.allocate<TestStruct>();
+	}
+	std::cout << "LinearAllocator: allocated " << TEST_ARRAY_SIZE << " pointers to TestStruct in " << endTimer() << " ms.\n";
+
+	startTimer();
+	benchmarkLinearAllocator.clear();
+	std::cout << "LinearAllocator: deallocated " << TEST_ARRAY_SIZE << " pointers to TestStruct in " << endTimer() << " ms.\n";
+
+
 
 	return 0;
 }
