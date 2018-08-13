@@ -77,18 +77,17 @@ Create a build directory (e.g. `mkdir build`) in the root directory, enter it (e
 ### FUTURE PLANS (roughly sorted by descending priority)
   - create/add a logger
   - add (more) examples and benchmarks
-  - add a system to not allow deallocating an array with an single object deallocate() and vice versa
   - reallocation support for easier debugging
-  - add the option to make allocators thread-safe
   - more allocators
   - new features? time will tell...
   
 
 ### CHANGELOG
 v0.2.2
+  - added thread-safe versions of allocation/deallocation methods
   - changed project structure
   - switched from Makefile to CMake as build system
-  - 
+  - expanded LinearAllocator example
 
 v0.2.1
   - expanded readme
