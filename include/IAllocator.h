@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <mutex>
 #include "AssertException.h"
-#include "../mem_utils/MemUtils.h"
+#include "MemUtils.h"
 
 namespace SimpleMemoryAllocator {
 

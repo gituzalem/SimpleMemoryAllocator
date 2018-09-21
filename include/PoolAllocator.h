@@ -1,7 +1,7 @@
 #ifndef SIMPLE_MEMORY_MANAGER_POOL_ALLOCATOR_GUARD
 #define SIMPLE_MEMORY_MANAGER_POOL_ALLOCATOR_GUARD
 
-#include "../common/IAllocator.h"
+#include "IAllocator.h"
 
 namespace SimpleMemoryAllocator {
 
