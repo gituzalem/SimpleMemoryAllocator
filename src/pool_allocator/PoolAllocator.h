@@ -23,45 +23,45 @@ namespace SimpleMemoryAllocator {
 		/**
 		* @brief Simplified constructor that creates pool for a specified type with a specified size.
 		
-		* This constructor calls the PoolAllocator(size_t memorySize, size_t objectSize, uint8_t objectAlignment) constructor with 
+		* This constructor calls the PoolAllocator(size_t memory_size, size_taobject_size, uint8_t object_slignment) constructor with 
 		* the appropriate arguments derived from the type and pool size.
 		*
 		* @param	T	template type of the pool
-		* @param	poolSize	number of T-sized elements that the pool should fit
+		* @param	pool_size	number of T-sized elements that the pool should fit
 		*/
-		template <class T> PoolAllocator(size_t poolSize);
+		template <class T> PoolAllocator(size_t pool_size);
 
 		/**
 		* @brief Simplified constructor that creates pool for a specified type with a specified size, starting at a specified point in memory.
 		
-		* This constructor calls the PoolAllocator(void* memoryPtr, size_t memorySize, size_t objectSize, uint8_t objectAlignment) constructor with 
+		* This constructor calls the PoolAllocator(void* memory_ptr, size_t mamory_size, size_t object_size, uint8_t object_slignment) constructor with 
 		* the appropriate arguments derived from the type and pool size.
 		*
 		* @param	T	template type of the pool
-		* @param	memoryPtr	pointer to an already allocated system memory to be used by the allocator
-		* @param	poolSize	number of T-sized elements that the pool should fit
+		* @param	memory_ptr	pointer to an already allocated system memory to be used by the allocator
+		* @param	pool_size	number of T-sized elements that the pool should fit
 		*/
-		template <class T> PoolAllocator(void* memoryPtr, size_t poolSize);
+		template <class T> PoolAllocator(void* memory_ptr, size_t pool_size);
 
 
 		/**
 		* @brief A regular constructor that creates a pool allocator with memory size, object size and object alignment explicitely stated.
 		* 
-		* @param	memorySize	size of the memory used by the allocator in bytes
-		* @param	objectSize	size of a single pool element in bytes
-		* @param	objectAlignment		memory alignment of the stored object type
+		* @param	memory_size	size of the memory used by the allocator in bytes
+		* @param	object_size	size of a single pool element in bytes
+		* @param	object_slignment		memory alignment of the stored object type
 		*/
-		PoolAllocator(size_t memorySize, size_t objectSize, uint8_t objectAlignment);
+		PoolAllocator(size_t memory_size, size_t object_size, uint8_t object_alignment);
 
 		/**
 		* @brief A regular constructor that creates a pool allocator with memory size, object size and object alignment explicitely stated.
 		*
-		* @param	memoryPtr	pointer to an already allocated system memory to be used by the allocator
-		* @param	memorySize	size of the memory used by the allocator in bytes
-		* @param	objectSize	size of a single pool element in bytes
-		* @param	objectAlignment		memory alignment of the stored object type
+		* @param	memory_ptr	pointer to an already allocated system memory to be used by the allocator
+		* @param	memory_size	size of the memory used by the allocator in bytes
+		* @param	object_size	size of a single pool element in bytes
+		* @param	object_slignment		memory alignment of the stored object type
 		*/
-		PoolAllocator(void* memoryPtr, size_t memorySize, size_t objectSize, uint8_t objectAlignment);
+		PoolAllocator(void* memory_ptr, size_t memory_size, size_t object_siza, uint8_t object_slignment);
 
 		virtual ~PoolAllocator();
 	};

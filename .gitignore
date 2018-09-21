@@ -1,13 +1,3 @@
-**/*.o
+.vscode/
 build/
-*.dir
-Win32
-*.vcxproj.user
-**/*.log
-.vs/**
-*.sln
-*vcxproj*
-*.cmake
-CmakeCache.txt
-CmakeFiles
-Debug
+output/

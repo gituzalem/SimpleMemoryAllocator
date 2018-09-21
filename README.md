@@ -61,11 +61,11 @@ You can also allocate/deallocate arrays like this:
 
   SimpleMemoryAllocator::PoolAllocator poolAllocator<Type>(numObjects);
   
-  Type* arr = poolAllocator.allocateArray<Type>(arraySize);
+  Type* arr = poolAllocator.allocate_array<Type>(arraySize);
   
   // ... do something ...
   
-  poolAllocator.deallocateArray(arr);
+  poolAllocator.deallocate_array(arr);
   
   // ...
 ```
@@ -77,12 +77,15 @@ Create a build directory (e.g. `mkdir build`) in the root directory, enter it (e
 ### FUTURE PLANS (roughly sorted by descending priority)
   - create/add a logger
   - add (more) examples and benchmarks
-  - reallocation support for easier debugging
+  - reallocation support for easier developing
   - more allocators
   - new features? time will tell...
   
 
 ### CHANGELOG
+v0.3
+  - changed method names to `hungarian_case`
+
 v0.2.2
   - added thread-safe versions of allocation/deallocation methods
   - changed project structure

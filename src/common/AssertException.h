@@ -33,25 +33,25 @@ public:
     m_report = ostream.str();
 }
 
-    ~AssertException() throw() {  }
+    ~AssertException() noexcept {  }
 
-    virtual const char* what() const throw() {
+    virtual const char* what() const noexcept {
         return m_report.c_str();
     }
 
-    const char* getExpression() const throw() {
+    const char* get_expression() const noexcept {
         return m_expression;
     }
 
-    const char* getFile() const throw() {
+    const char* get_file() const noexcept {
         return m_file;
     }
 
-    int getLine() const throw() {
+    int get_line() const noexcept {
         return m_line;
     }
 
-    const char* getMessage() const throw() {
+    const char* get_message() const noexcept {
         return m_message.c_str();
     }
 };

@@ -19,7 +19,7 @@ namespace SimpleMemoryAllocator {
 		*
 		* @return the nearest aligned memory address
 		*/
-		uintptr_t getNextAlignedAddress(void* address, uint8_t alignment);
+		uintptr_t get_next_aligned_address(void* address, uint8_t alignment);
 
 		/**
 		* @brief Computes the adjustment needed for the nearest aligned address.
@@ -29,18 +29,18 @@ namespace SimpleMemoryAllocator {
 		*
 		* @return the adjustment required to obtain a nearest aligned address in bytes
 		*/
-		uint8_t getNextAddressAdjustment(void* address, uint8_t alignment);
+		uint8_t get_next_address_adjustment(void* address, uint8_t alignment);
 
 		/**
 		* @brief Computes the adjustment needed for the nearest aligned address when using an allocation header.
 		*
 		* @param	address		original address
 		* @param	alignment	type memory alignment size
-		* @param	headerSize	size of the allocation header in bytes
+		* @param	header_size	size of the allocation header in bytes
 		*
 		* @return the adjustment required to obtain the nearest aligned address in bytes
 		*/
-		uint8_t getNextAddressAdjustmentWithHeader(void* address, uint8_t alignment, uint8_t headerSize);
+		uint8_t get_next_address_adjustment_with_header(void* address, uint8_t alignment, uint8_t header_size);
 
 		/**
 		* @brief Performs an arithmetic addition of a number to a memory address.
@@ -50,7 +50,7 @@ namespace SimpleMemoryAllocator {
 		* 
 		* @return the new address obtained by addition
 		*/
-		void* addToPointer(void* address, size_t add);
+		void* add_to_pointer(void* address, size_t add);
 	} // namespace MemoryUtils
 
 

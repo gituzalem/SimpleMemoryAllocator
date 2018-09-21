@@ -3,28 +3,28 @@
 using namespace SimpleMemoryAllocator;
 
 template <class T>
-PoolAllocator::PoolAllocator(size_t poolSize) : PoolAllocator(nullptr, poolSize*sizeof(T) + alignof(T), sizeof(T), alignof(T)) { }
+PoolAllocator::PoolAllocator(size_t pool_size) : PoolAllocator(nullptr, pool_size*sizeof(T) + alignof(T), sizeof(T), alignof(T)) { }
 
 template <class T>
-PoolAllocator::PoolAllocator(void* memoryPtr, size_t poolSize) : PoolAllocator(memoryPtr, poolSize*sizeof(T) + alignof(T), sizeof(T), alignof(T)) { }
+PoolAllocator::PoolAllocator(void* memory_ptr, size_t pool_size) : PoolAllocator(memory_ptr, pool_size*sizeof(T) + alignof(T), sizeof(T), alignof(T)) { }
 
-PoolAllocator::PoolAllocator(size_t memorySize, size_t objectSize, uint8_t objectAlignment) : PoolAllocator(nullptr, memorySize, objectSize, objectAlignment) { }
+PoolAllocator::PoolAllocator(size_t memory_size, size_t objectSize, uint8_t object_alignment) : PoolAllocator(nullptr, memory_size, objectSize, object_alignment) { }
 
-PoolAllocator::PoolAllocator(void* memoryPtr, size_t memorySize, size_t objectSize, uint8_t objectAlignment) : IAllocator(memoryPtr, memorySize) {
-	if (memoryPtr == nullptr)
-		memoryPtr = m_start;
+PoolAllocator::PoolAllocator(void* memory_ptr, size_t memory_size, size_t objectSize, uint8_t object_alignment) : IAllocator(memory_ptr, memory_size) {
+	if (memory_ptr == nullptr)
+		memory_ptr = m_start;
 
-	uint8_t adjustment = MemoryUtils::getNextAddressAdjustment(memoryPtr, objectAlignment);
+	uint8_t adjustment = MemoryUtils::get_next_address_adjustment(memory_ptr, object_alignment);
 
-	// align only at memoryPtr, this should make the rest automatically aligned
-	m_freeList = (void**)MemoryUtils::addToPointer(memoryPtr, adjustment);
+	// align only at memory_ptr, this should make the rest automatically aligned
+	m_freeList = (void**)MemoryUtils::add_to_pointer(memory_ptr, adjustment);
 
 	// initialize the free cell linked list
 	// each node free node n initially points to node n+1 and the last node points to null
-	size_t numObjects = (memorySize - adjustment) / objectSize;
+	size_t numObjects = (memory_size - adjustment) / objectSize;
 	void** ptr = m_freeList;
 	for (size_t i = 0; i < numObjects - 1; ++i) {
-		*ptr = MemoryUtils::addToPointer(ptr, objectSize);
+		*ptr = MemoryUtils::add_to_pointer(ptr, objectSize);
 		ptr = (void**) *ptr;
 	}
 	*ptr = nullptr;
@@ -42,8 +42,8 @@ void* PoolAllocator::__allocate(size_t size, uint8_t alignment) {
 
 	void* ptr = m_freeList;				// get first free block
 	m_freeList = (void**)(*m_freeList);	// and then set the next free block as the first free block
-	m_usedMemory += size;
-	++m_numAllocations;
+	m_used_memory += size;
+	++m_num_allocations;
 
 	return ptr;
 }
@@ -53,6 +53,6 @@ void PoolAllocator::__deallocate(void* ptr) {
 
 	*((void**)ptr) = m_freeList;
 	m_freeList = (void**)ptr;
-	m_usedMemory -= m_objectSize;
-	--m_numAllocations;
+	m_used_memory -= m_objectSize;
+	--m_num_allocations;
 }
