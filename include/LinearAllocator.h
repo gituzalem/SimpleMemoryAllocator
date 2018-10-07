@@ -26,7 +26,7 @@ namespace SimpleMemoryAllocator {
 		/**
 		* @brief A default constructor that allocates a specified number of bytes from given memory block.
 		*
-		* @param	memory_ptr	pointer to an already allocated system memory to be used by the allocator
+		* @param	memory_ptr  	pointer to an already allocated system memory to be used by the allocator
 		* @param	memory_size 	size of the memory used by the allocator in bytes
 		*/
 		LinearAllocator(void* memory_ptr, size_t memory_size);

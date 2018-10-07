@@ -2,9 +2,9 @@
 
 using namespace SimpleMemoryAllocator;
 
-StackAllocator::StackAllocator(size_t size) : StackAllocator(nullptr, size) { }
+StackAllocator::StackAllocator(size_t memory_size) : StackAllocator(nullptr, memory_size) { }
 
-StackAllocator::StackAllocator(void* start, size_t size) : IAllocator(start, size), m_top(m_start), m_previousTop(nullptr) {  }
+StackAllocator::StackAllocator(void* memory_ptr, size_t memory_size) : IAllocator(memory_ptr, memory_size), m_top(m_start), m_previousTop(nullptr) {  }
 
 StackAllocator::~StackAllocator() {
 	m_top = nullptr;

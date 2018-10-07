@@ -4,7 +4,7 @@ project(SimpleMemoryAllocator)
 set(EXECUTABLE_OUTPUT_PATH ../output/)
 set(LIBRARY_OUTPUT_PATH    ../output/)
 
-set(CXX_FLAGS -Wterminate -I../include/ -O2 -ggdb)
+set(CXX_FLAGS -Wterminate -I../include/ -O3 -ggdb)
 
 add_library(memutils src/MemUtils)
 target_compile_options(memutils PRIVATE "${CXX_FLAGS}")

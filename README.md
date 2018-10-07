@@ -84,6 +84,7 @@ Create a build directory (e.g. `mkdir build`) in the root directory, enter it (e
 
 ### CHANGELOG
 v0.3
+  - added documentation for StackAllocator
   - changed method names to `hungarian_case`
 
 v0.2.2
