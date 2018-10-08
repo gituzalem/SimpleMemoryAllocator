@@ -1,10 +1,10 @@
-#include "StackAllocator.h"
+#include <StackAllocator.h>
 
 using namespace SimpleMemoryAllocator;
 
 StackAllocator::StackAllocator(size_t memory_size) : StackAllocator(nullptr, memory_size) { }
 
-StackAllocator::StackAllocator(void* memory_ptr, size_t memory_size) : IAllocator(memory_ptr, memory_size), m_top(m_start), m_previousTop(nullptr) {  }
+StackAllocator::StackAllocator(void* memory_ptr, size_t memory_size) : BaseAllocator(memory_ptr, memory_size), m_top(m_start), m_previousTop(nullptr) {  }
 
 StackAllocator::~StackAllocator() {
 	m_top = nullptr;

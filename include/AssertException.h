@@ -12,7 +12,7 @@ class AssertException : public std::exception {
 private:
     const char*		m_expression;
     const char*		m_file;
-int				m_line;
+    int				m_line;
     std::string		m_message;
     std::string		m_report;
 public:

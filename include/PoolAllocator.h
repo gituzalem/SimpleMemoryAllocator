@@ -1,7 +1,7 @@
 #ifndef SIMPLE_MEMORY_MANAGER_POOL_ALLOCATOR_GUARD
 #define SIMPLE_MEMORY_MANAGER_POOL_ALLOCATOR_GUARD
 
-#include "IAllocator.h"
+#include <BaseAllocator.h>
 
 namespace SimpleMemoryAllocator {
 
@@ -11,7 +11,7 @@ namespace SimpleMemoryAllocator {
 	* Also negates the bad effect of memory fragmentation, sice every time a block is freed, it is 
 	* guaranteed to be able to hold another one in its place.
 	*/
-	class PoolAllocator : public IAllocator {
+	class PoolAllocator : public BaseAllocator {
 	private:
 		void** m_freeList;          /// a linked list of all currectly unused pool elements
 		size_t m_objectSize;        /// size of the stored type

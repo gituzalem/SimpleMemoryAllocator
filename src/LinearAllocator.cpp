@@ -1,10 +1,10 @@
-#include "LinearAllocator.h"
+#include <LinearAllocator.h>
 
 using namespace SimpleMemoryAllocator;
 
-LinearAllocator::LinearAllocator(size_t memory_size) : IAllocator(nullptr, memory_size), m_firstFree(m_start) { }
+LinearAllocator::LinearAllocator(size_t memory_size) : BaseAllocator(nullptr, memory_size), m_firstFree(m_start) { }
 
-LinearAllocator::LinearAllocator(void* memory_ptr, size_t memory_size) : IAllocator(memory_ptr, memory_size), m_firstFree(m_start) { }
+LinearAllocator::LinearAllocator(void* memory_ptr, size_t memory_size) : BaseAllocator(memory_ptr, memory_size), m_firstFree(m_start) { }
 
 LinearAllocator::~LinearAllocator() {
 	m_firstFree = nullptr;

@@ -1,7 +1,7 @@
 #ifndef SIMPLE_MEMORY_MANAGER_STACK_ALLOCATOR_GUARD
 #define SIMPLE_MEMORY_MANAGER_STACK_ALLOCATOR_GUARD
 
-#include "IAllocator.h"
+#include <BaseAllocator.h>
 
 namespace SimpleMemoryAllocator {
 
@@ -10,7 +10,7 @@ namespace SimpleMemoryAllocator {
 	* in a LIFO fashion: if you allocated A first and then B, you must first deallocate B before 
 	* deallocating A.
 	*/
-	class StackAllocator : public IAllocator {
+	class StackAllocator : public BaseAllocator {
 	private:
 		void* m_top;            /// pointer to the element on the top of the stack
 		void* m_previousTop;    /// pointer to the element below the element on the top of the stack
