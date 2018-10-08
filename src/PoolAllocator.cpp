@@ -1,4 +1,4 @@
-#include "PoolAllocator.h"
+#include <PoolAllocator.h>
 
 using namespace SimpleMemoryAllocator;
 
@@ -10,7 +10,7 @@ PoolAllocator::PoolAllocator(void* memory_ptr, size_t pool_size) : PoolAllocator
 
 PoolAllocator::PoolAllocator(size_t memory_size, size_t objectSize, uint8_t object_alignment) : PoolAllocator(nullptr, memory_size, objectSize, object_alignment) { }
 
-PoolAllocator::PoolAllocator(void* memory_ptr, size_t memory_size, size_t objectSize, uint8_t object_alignment) : IAllocator(memory_ptr, memory_size) {
+PoolAllocator::PoolAllocator(void* memory_ptr, size_t memory_size, size_t objectSize, uint8_t object_alignment) : BaseAllocator(memory_ptr, memory_size) {
 	if (memory_ptr == nullptr)
 		memory_ptr = m_start;
 

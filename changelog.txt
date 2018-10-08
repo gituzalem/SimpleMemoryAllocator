@@ -1,0 +1,38 @@
+### CHANGELOG ###
+v0.3
+  - added documentation for StackAllocator
+  - changed method names to `hungarian_case`
+  - cmake project changes, now correctly building shared library for the allocators
+
+v0.2.2
+  - added thread-safe versions of allocation/deallocation methods
+  - changed project structure
+  - switched from Makefile to CMake as build system
+  - expanded LinearAllocator example
+
+v0.2.1
+  - expanded readme
+  - source files and Makefile cosmetic changes
+  - restructured build dir
+  - you can now also build a dynamic library with Makefile
+  - added a more intuitive constructor for PoolAllocator
+  - provided documentation for BaseAllocator, PoolAllocator, LinearAllocator classes and MemoryUtils namespace and functions
+
+v0.2
+  - changed general allocate/deallocate interface functions from free functions to BaseAllocator member functions
+  - added ::operator new memory allocation/deallocation if memory is not already provided for constructor
+
+v0.1.2
+  - added the ability to allocate and deallocate arrays
+  - added an assertion system based on exceptions
+  - added a LinearAllocator example with personal thoughts on code
+  - various minor fixes
+  
+v0.1.1 
+  - rebranded to SimpleMemoryAllocator to better reflect its funcionality
+  - added this readme and changelog
+  - changed licence to MIT
+  - removed MSVC solution and project, will be readded once it works
+
+v0.1 
+  - initial GitHub commit as SimpleMemoryManager!

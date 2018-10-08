@@ -4,15 +4,16 @@
 #include <cstddef>
 #include <cstdint>
 #include <mutex>
-#include "AssertException.h"
-#include "MemUtils.h"
+#include <iostream>
+#include <AssertException.h>
+#include <MemUtils.h>
 
 namespace SimpleMemoryAllocator {
 
 	/**
 	* The base custom allocator class containing all the common interface methods and members. All allocators inherit from this class.
 	*/
-	class IAllocator {
+	class BaseAllocator {
 	private:
 		bool	    m_handling_memory_internally = false;  /// a boolean flag to indicate the allocator is handling the system memory allocation
 		std::mutex  m_allocator_mutex;
@@ -23,7 +24,7 @@ namespace SimpleMemoryAllocator {
 		size_t      m_used_memory;                        /// amount of used memory in bytes
 		size_t      m_num_allocations;                    /// allocation counter, increments with allocations and decrements with deallocations
 
-		IAllocator(const IAllocator&) = delete;	          // disable copy-constructor
+		BaseAllocator(const BaseAllocator&) = delete;	          // disable copy-constructor
 
 		////////////////////////////////////////////////////////////////////////////
 		// main logic methods, these are to be implemented in specific allocators //
@@ -54,7 +55,7 @@ namespace SimpleMemoryAllocator {
 		* @param	start       a pointer to the beginning of the allocated memory space
 		* @param	size        size of the allocated memory space in bytes
 		*/
-		IAllocator(void* start, size_t size) {
+		BaseAllocator(void* start, size_t size) {
 			m_start = (start != nullptr ? start : allocate_memory_native(size));
 			m_size = size;
 			m_used_memory = 0;
@@ -64,8 +65,11 @@ namespace SimpleMemoryAllocator {
 		/**
 		* @brief Default destructor, able to detect nondeallocated memory and possible deallocation faults
 		*/
-		virtual ~IAllocator() {
-			throw_assert(m_num_allocations == 0 || m_used_memory == 0, "all memory should be deallocated");
+		virtual ~BaseAllocator() {
+			if (m_num_allocations != 0 || m_used_memory != 0)
+				std::cerr 
+					<< "All memory shoudld be deallocated before destruction, currently leaking " 
+					<< m_num_allocations << " allocations with total size of " << m_used_memory << " bytes.\n";
 
 			deallocate_memory_native();
 
